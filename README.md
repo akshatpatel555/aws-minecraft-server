@@ -20,11 +20,14 @@ This project automates the full provisioning and configuration of a Minecraft Ja
 
 ### Tools
 
-Terraform [terraform.io](https://developer.hashicorp.com/terraform/install)
-Ansible `sudo apt install ansible`
-AWS CLI [aws.amazon.com/cli](https://aws.amazon.com/cli/)
-nmap `sudo apt install nmap`
-Git [git-scm.com](https://git-scm.com)
+| Tool | Install |
+|------|---------|
+| Terraform | [terraform.io](https://developer.hashicorp.com/terraform/install) |
+| Ansible | `sudo apt install ansible -y` |
+| AWS CLI | [aws.amazon.com/cli](https://aws.amazon.com/cli/) |
+| nmap | `sudo apt install nmap -y` |
+| Git | [git-scm.com](https://git-scm.com) |
+| WSL | `wsl --install -d Ubuntu` |
 
 ### AWS Credentials
 
