@@ -1,0 +1,67 @@
+---
+- name: Configure Minecraft Server
+  hosts: minecraft
+  become: yes
+
+  vars:
+    minecraft_dir: /opt/minecraft
+    minecraft_jar_url: "https://piston-data.mojang.com/v1/objects/e6ec2f64e6080b9b5d9b471b291c33cc7f509733/server.jar"
+    java_package: openjdk-21-jre-headless
+
+  tasks:
+    - name: Update apt cache
+      apt:
+        update_cache: yes
+
+    - name: Install Java 21
+      apt:
+        name: "{{ java_package }}"
+        state: present
+
+    - name: Create minecraft user
+      user:
+        name: minecraft
+        system: yes
+        shell: /bin/bash
+        home: "{{ minecraft_dir }}"
+        create_home: yes
+
+    - name: Create minecraft directory
+      file:
+        path: "{{ minecraft_dir }}"
+        state: directory
+        owner: minecraft
+        group: minecraft
+        mode: '0755'
+
+    - name: Download Minecraft server jar
+      get_url:
+        url: "{{ minecraft_jar_url }}"
+        dest: "{{ minecraft_dir }}/server.jar"
+        owner: minecraft
+        group: minecraft
+        mode: '0644'
+
+    - name: Accept EULA
+      copy:
+        content: "eula=true\n"
+        dest: "{{ minecraft_dir }}/eula.txt"
+        owner: minecraft
+        group: minecraft
+        mode: '0644'
+
+    - name: Deploy systemd service
+      template:
+        src: templates/minecraft.service.j2
+        dest: /etc/systemd/system/minecraft.service
+        mode: '0644'
+
+    - name: Reload systemd
+      systemd:
+        daemon_reload: yes
+
+    - name: Enable and start Minecraft service
+      systemd:
+        name: minecraft
+        enabled: yes
+        state: started

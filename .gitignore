@@ -1,0 +1,12 @@
+# Terraform
+.terraform/
+terraform.tfstate
+terraform.tfstate.backup
+*.tfstate
+*.tfstate.*
+
+# Ansible generated files
+ansible/inventory_generated.ini
+
+# Misc
+LICENSE.txt
